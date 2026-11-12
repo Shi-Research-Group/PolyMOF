@@ -2,7 +2,7 @@
 
 import sys
 import argparse
-import rr
+import reaction_rate
 import numpy as np
 from scipy.optimize import curve_fit
 import math
@@ -13,7 +13,7 @@ def setup_args(parser):
 def parse_args():
   parser = argparse.ArgumentParser(
           description="Fit rate constants for simple reaction theory")
-  rr.setup_args(parser)
+  reaction_rate.setup_args(parser)
   setup_args(parser)
   args = parser.parse_args()
   return args
@@ -32,7 +32,7 @@ class ReactionSolver:
     def reaction(self, it, *k):
         i, t = it
         k = np.asarray([math.exp(k[i]) for i in range(len(k))])
-        result = rr.computeReaction(self.sites, self.c0, self.cN, k, self.dt, self.nt)
+        result = reaction_rate.computeReaction(self.sites, self.c0, self.cN, k, self.dt, self.nt)
         tmap = {}
         rv = np.zeros(i.size)
         sumdiff2 = np.zeros(self.sites+1)
