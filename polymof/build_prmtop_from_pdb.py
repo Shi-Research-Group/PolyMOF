@@ -70,12 +70,12 @@ def parse_args():
         "signature (element-based, since the .pdb has no atom types)."
     )
     parser.add_argument(
-        "--old-prmtops", nargs="+", metavar="old_prmtop",
+        "--old-prmtops", nargs="+", metavar="old_prmtop", required=True,
         help="One or more prmtop file(s) with known atom types, charges "
         "and bonded parameters, used as the parameter library.",
     )
-    parser.add_argument("--new-pdbs", nargs="+", help="PDB file (with CONECT "
-        "records) describing the new molecule.")
+    parser.add_argument("--new-pdbs", nargs="+", required=True,
+        help="PDB file (with CONECT records) describing the new molecule.")
     parser.add_argument(
         "--max-bonds", dest="max_bonds", type=int, default=3, metavar="N",
         help="Fragment radius, in bonds, used to determine whether an atom "
