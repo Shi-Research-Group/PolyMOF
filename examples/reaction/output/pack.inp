@@ -1,0 +1,49 @@
+# All the atoms from diferent molecules will be separated at least 2.0
+# Anstroms at the solution.
+
+tolerance 2.0
+
+seed -1
+
+# The file type of input and output files is PDB
+
+filetype pdb
+
+# The name of the output file
+
+output box.pdb
+
+pbc 180.0 180.0 180.0
+
+structure FE.pdb
+  number 12
+end structure
+
+structure 10mer0527564.pdb
+  number 1
+end structure
+
+structure 10mer1045277.pdb
+  number 1
+end structure
+
+structure 10mer0467554.pdb
+  number 1
+end structure
+
+structure 10mer0619877.pdb
+  number 1
+end structure
+
+structure 10mer0984613.pdb
+  number 1
+end structure
+
+structure 10mer0568015.pdb
+  number 1
+end structure
+
+structure IM.pdb
+  number 144
+end structure
+

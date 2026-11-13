@@ -1,0 +1,6 @@
+npoly 10
+nPBI 6
+nFe 12
+nIM 144
+molecule 10mer
+total_steps 5000000

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# packmol will produce a different configuration every time
+# box.pdb will be different
+# pack.inp and parm.lammps should match.
+# data.lammps should match except for the config
+python ../../polymof/polymof_setup.py
