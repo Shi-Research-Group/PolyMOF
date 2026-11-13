@@ -228,10 +228,14 @@ def a2l(params):
         counts += [params["nNO3"]]
         charges += [-1]
     validate_files(topologies, counts, "box.pdb")
-    rv = amber2lammps("data.lammps", "parm.lammps", topologies, counts, "box.pdb",
-                 charges, 3.8, True, False, True)
-    if not rv:
-        raise
+    try:
+        rv = amber2lammps("data.lammps", "parm.lammps", topologies, counts, "box.pdb",
+                     charges, 3.8, verbose=True, keep_temp=False, c4_cutoff=9.0, c4_coulomb="long", use_typelabels=True)
+        return True
+    except Exception:
+        # if it fails, print info, but bail normally (so that collect.py can continue with other systems)
+        print(f"Error occurred: {type(e).__name__} - {e}")
+        return False
 
 def writeFullReactions():
     reactantLines = find_unique_fragments("data.lammps", ["fe","nd"], 3, False)
@@ -358,7 +362,9 @@ def main():
         clobber = True
     if clobber or not Path("data.lammps").is_file():
         print("Converting to LAMMPS data files")
-        a2l(params)
+        rv = a2l(params)
+        if not rv:
+            return
         if params['nFe'] > 0:
             print("Converting to LAMMPS hybrid parameters")
             make_hybrid_coeff("parm.lammps", {"angle": "harmonic", "dihedral": "fourier"})

@@ -1,0 +1,72 @@
+# LAMMPS Input Script for Converted AMBER System
+
+# --------------------- Initialization ---------------------
+units real
+dimension 3
+boundary p p p
+atom_style full
+
+# --------------------- Force Field Settings ---------------------
+pair_style      lj/cut/coul/long RC RC
+kspace_style    pppm 1.0e-4
+pair_modify     mix arithmetic tail yes
+bond_style      harmonic
+angle_style      hybrid harmonic cosine/periodic
+dihedral_style    hybrid fourier harmonic
+improper_style    hybrid fourier
+special_bonds lj 0.0 0.0 0.5 coul 0.0 0.0 0.83333333
+
+# --------------------- System Setup ---------------------
+# Read the molecular structure
+read_data FEX-data.1.lammps &
+  extra/bond/per/atom 10 &
+  extra/angle/per/atom 30 &
+  extra/dihedral/per/atom 30 &
+  extra/improper/per/atom 50 &
+  extra/special/per/atom 50
+include FEX-parm.lammps
+
+
+# --------------------- Output Settings ---------------------
+thermo 500
+
+#thermo_style custom step temp press density pe ebond eangle edihed eimp epair evdwl ecoul elong etail
+
+thermo_style custom step temp press density pe econserve lx ly lz
+print "Random seed for velocity ${my_seed}"
+velocity all create 1500.0 ${my_seed}
+
+dump dumpeq all custom/zstd 5000 dumpeq.lammpstrj.zst id mol typelabel xs ys zs
+
+timestep 1
+
+fix eq0 all nvt temp 1500 1500 100
+fix d all deform 1 x final 0 LL1 y final 0 LL1 z final 0 LL1
+run 40000
+fix d all deform 1 x final 0 LL2 y final 0 LL2 z final 0 LL2
+run 40000
+fix d all deform 1 x final 0 LL3 y final 0 LL3 z final 0 LL3
+run 40000
+fix d all deform 1 x final 0 LL4 y final 0 LL4 z final 0 LL4
+run 40000
+unfix d
+unfix eq0
+
+fix eq all nvt temp 1500 1500 100
+run 1000000
+unfix eq
+
+undump dumpeq
+
+include in.reactions.full.1
+
+dump dumpreact all custom/zstd 500 dumpreact.1.lammpstrj.zst id mol typelabel xs ys zs
+
+fix 1 statted_grp_REACT nvt temp 1500 1500 100
+
+thermo 100
+thermo_style custom step temp press density pe econserve lx ly lz f_rxns[*]
+
+run 100000
+
+write_data final.data.1
