@@ -70,12 +70,12 @@ def parse_args():
         "signature (element-based, since the .pdb has no atom types)."
     )
     parser.add_argument(
-        "--old-prmtops", nargs="+", metavar="old_prmtop", required=True,
+        "--old-prmtops", nargs="+", metavar="old_prmtop",
         help="One or more prmtop file(s) with known atom types, charges "
         "and bonded parameters, used as the parameter library.",
     )
-    parser.add_argument("--new-pdbs", nargs="+", required=True,
-        help="PDB file (with CONECT records) describing the new molecule.")
+    parser.add_argument("--new-pdbs", nargs="+", help="PDB file (with CONECT "
+        "records) describing the new molecule.")
     parser.add_argument(
         "--max-bonds", dest="max_bonds", type=int, default=3, metavar="N",
         help="Fragment radius, in bonds, used to determine whether an atom "
@@ -796,8 +796,12 @@ def build_prmtop_for_pdb(library, new_pdb, max_bonds, neutralize, strict):
         a, b = library.type_self_lj.get(t, (0.0, 0.0))
         return (round(a, 4), round(b, 4))
 
+    def lj_raw(t):
+        return library.type_self_lj.get(t, (0.0, 0.0))
+
     type_to_class = {}
     class_key_list = []
+    class_raw_list = []
     for aid in range(1, n_atoms + 1):
         t = assigned_type[aid]
         if t in type_to_class:
@@ -810,6 +814,7 @@ def build_prmtop_for_pdb(library, new_pdb, max_bonds, neutralize, strict):
                 break
         if found is None:
             class_key_list.append(key)
+            class_raw_list.append(lj_raw(t))
             found = len(class_key_list)
         type_to_class[t] = found
     ntypes = len(class_key_list)
@@ -824,7 +829,7 @@ def build_prmtop_for_pdb(library, new_pdb, max_bonds, neutralize, strict):
         eps = b / (4 * sigma ** 6)
         return sigma, eps
 
-    class_sigma_eps = [sigma_eps(*k) for k in class_key_list]
+    class_sigma_eps = [sigma_eps(*k) for k in class_raw_list]
 
     n_pairs = ntypes * (ntypes + 1) // 2
     acoef = [0.0] * n_pairs
