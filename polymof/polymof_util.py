@@ -34,8 +34,9 @@ def read_params(file):
     if not 'molecule' in params:
         sys.exit("molecule missing in params")
     if not 'acpath' in params:
-        sys.exit("acpath missing in params")
-    if not Path(params['acpath']).is_dir():
+        # OK so long as we already have prmtop
+        params['acpath'] = None
+    elif not Path(params['acpath']).is_dir():
         print("acpath", params['acpath'], "must exist")
         sys.exit(1)
     if 'target_hours' in params:

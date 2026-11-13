@@ -8,7 +8,6 @@ from make_pentamer_ac import ensureAllH
 import subprocess
 from amber_to_lammps import validate_files, amber2lammps
 from go_hybrid_coeff import make_hybrid_coeff
-from switch_type_labels import switch_type_labels
 from find_unique_fragments import find_unique_fragments
 from make_reactions import readReactants, writeReactions
 from data2reaction import d2r_args, data2reaction
@@ -46,13 +45,13 @@ def linkTM(params):
     m = params['molecule']
     ready = True
     for h in params['tm']:
-        if not Path(m+h+".pdb").is_symlink():
+        if not Path(m+h+".pdb").is_file() and not Path(m+h+".pdb").is_symlink():
             target = params['acpath']+m+".tm/"+m+h+"/"+m+h+".pdb"
             if Path(target).is_file():
                 os.symlink(target, m+h+".pdb")
             else:
                 ready = False
-        if not Path(m+h+".prmtop").is_symlink():
+        if not Path(m+h+".prmtop").is_file() and not Path(m+h+".prmtop").is_symlink():
             target = params['acpath']+m+".tm/"+m+h+"/"+m+h+".prmtop"
             if Path(target).is_file() and Path(target).stat().st_size > 0:
                 os.symlink(target, m+h+".prmtop")
@@ -65,6 +64,9 @@ def handleTM(params):
         readTM(params, "tm.list")
     else:
         makeTM(params, "tm.list")
+    ready = linkTM(params)
+    if ready:
+        return ready
     updateTMList(params)
     return linkTM(params)
 
@@ -76,7 +78,6 @@ def writePack(params):
     nFe = params['nFe']
     nPBI = params['nPBI']
     nIM = params['nIM']
-    print(params)
     nNO3 = params['nNO3']
     npoly = params['npoly']
     L0 = max(npoly * 90 / 5, 90)
@@ -227,8 +228,10 @@ def a2l(params):
         counts += [params["nNO3"]]
         charges += [-1]
     validate_files(topologies, counts, "box.pdb")
-    amber2lammps("data.lammps", "parm.lammps", topologies, counts, "box.pdb",
+    rv = amber2lammps("data.lammps", "parm.lammps", topologies, counts, "box.pdb",
                  charges, 3.8, True, False, True)
+    if not rv:
+        raise
 
 def writeFullReactions():
     reactantLines = find_unique_fragments("data.lammps", ["fe","nd"], 3, False)
@@ -359,11 +362,6 @@ def main():
         if params['nFe'] > 0:
             print("Converting to LAMMPS hybrid parameters")
             make_hybrid_coeff("parm.lammps", {"angle": "harmonic", "dihedral": "fourier"})
-        clobber = True
-    if False and params['nFe'] > 0 and ( clobber or not Path("data-nd.lammps").is_file() ):
-        # we generate PDBs with only nd now
-        print("Switching type labels nc -> nd for PBI")
-        switch_type_labels("data.lammps", "data-nd.lammps")
         clobber = True
     if params['nFe'] > 0 and ( clobber or not Path("reactions").is_file() ):
         print("Finding reactant fragments")
