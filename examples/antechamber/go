@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# create a 10mer PDB from a 5mer PDB
+python ../../polymof/extract_monomer.py --bond 154:99 --attach 133 --polymerize 10 pentamer.pdb 10mer.pdb
+
+# create a tautomer; a 10mer has 20 hydrogen choices, so 2^20=1048576 possibilities use a 7 digit number from 0000000 to 1048575
+python ../../polymof/flip_hydrogens.py 10mer.pdb 10mer0123456.pdb 0123456
+
+# produce prmtop for our tautomer from library of 3mer prmtops
+python ../../polymof/build_prmtop_from_pdb.py --old-prmtops 3mers/*.prmtop --new-pdbs 10mer0123456.pdb
+
+
