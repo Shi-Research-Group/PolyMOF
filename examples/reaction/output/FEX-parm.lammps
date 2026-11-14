@@ -1,0 +1,205 @@
+# Force field parameters generated from AMBER topologies
+
+
+# Topology 1: FE.prmtop
+# Nonbonded
+pair_coeff 1 1 0.0032 2.5942970672246677 # fe
+
+# Topology 2: 10mer0527564.prmtop
+# Nonbonded
+pair_coeff 2 2 0.0988 3.3152123099438304 # ca
+pair_coeff 5 5 0.0988 3.3152123099438304 # cc
+pair_coeff 7 7 0.0988 3.3152123099438304 # cp
+pair_coeff 9 9 0.0161 2.4472987787315117 # h5
+pair_coeff 3 3 0.0161 2.62547852235958 # ha
+pair_coeff 8 8 0.01 1.1064962079303013 # hn
+pair_coeff 4 4 0.2042 3.2058099473561965 # na
+pair_coeff 6 6 0.0941 3.3841678707278926 # nd
+
+# Topology 3: 10mer1045277.prmtop
+# Nonbonded
+# pair_coeff for ca already defined above
+# pair_coeff for cc already defined above
+# pair_coeff for cp already defined above
+# pair_coeff for h5 already defined above
+# pair_coeff for ha already defined above
+# pair_coeff for hn already defined above
+# pair_coeff for na already defined above
+# pair_coeff for nd already defined above
+
+# Topology 4: 10mer0467554.prmtop
+# Nonbonded
+# pair_coeff for ca already defined above
+# pair_coeff for cc already defined above
+# pair_coeff for cp already defined above
+# pair_coeff for h5 already defined above
+# pair_coeff for ha already defined above
+# pair_coeff for hn already defined above
+# pair_coeff for na already defined above
+# pair_coeff for nd already defined above
+
+# Topology 5: 10mer0619877.prmtop
+# Nonbonded
+# pair_coeff for ca already defined above
+# pair_coeff for cc already defined above
+# pair_coeff for cp already defined above
+# pair_coeff for h5 already defined above
+# pair_coeff for ha already defined above
+# pair_coeff for hn already defined above
+# pair_coeff for na already defined above
+# pair_coeff for nd already defined above
+
+# Topology 6: 10mer0984613.prmtop
+# Nonbonded
+# pair_coeff for ca already defined above
+# pair_coeff for cc already defined above
+# pair_coeff for cp already defined above
+# pair_coeff for h5 already defined above
+# pair_coeff for ha already defined above
+# pair_coeff for hn already defined above
+# pair_coeff for na already defined above
+# pair_coeff for nd already defined above
+
+# Topology 7: 10mer0568015.prmtop
+# Nonbonded
+# pair_coeff for ca already defined above
+# pair_coeff for cc already defined above
+# pair_coeff for cp already defined above
+# pair_coeff for h5 already defined above
+# pair_coeff for ha already defined above
+# pair_coeff for hn already defined above
+# pair_coeff for na already defined above
+# pair_coeff for nd already defined above
+
+# Topology 8: IM.prmtop
+# Nonbonded
+# pair_coeff for cc already defined above
+pair_coeff 10 10 0.0988 3.3152123099438304 # cd
+pair_coeff 11 11 0.0161 2.536388650545546 # h4
+# pair_coeff for h5 already defined above
+# pair_coeff for hn already defined above
+# pair_coeff for na already defined above
+# pair_coeff for nd already defined above
+
+# Bond Coefficients (deduplicated across all topologies and copies)
+bond_coeff 1 354.2500 1.3986  # ca-ca
+bond_coeff 2 296.5000 1.4528  # ca-cc
+bond_coeff 3 328.6500 1.3864  # ca-nd
+bond_coeff 4 329.3200 1.3858  # ca-na
+bond_coeff 5 335.5000 1.3803  # cc-na
+bond_coeff 6 419.7200 1.3158  # cc-nd
+bond_coeff 7 346.0700 1.4056  # ca-cp
+bond_coeff 8 269.3700 1.4829  # cp-cp
+bond_coeff 9 360.6900 1.0860  # ca-ha
+bond_coeff 10 481.7700 1.0095  # hn-na
+bond_coeff 11 366.9700 1.0820  # cc-h5
+bond_coeff 12 386.2400 1.3730  # cc-cd
+bond_coeff 13 345.9300 1.3713  # cd-nd
+bond_coeff 14 368.7200 1.0809  # cc-h4
+bond_coeff 15 367.2900 1.0818  # cd-h4
+
+# Angle Coefficients (deduplicated across all topologies and copies)
+angle_coeff 1 harmonic 63.6700 120.0200 # ca-ca-ca
+angle_coeff 2 harmonic 62.1900 120.9101 # ca-ca-cc
+angle_coeff 3 harmonic 67.6100 121.0000 # ca-ca-nd
+angle_coeff 4 harmonic 67.8200 120.3101 # ca-ca-na
+angle_coeff 5 harmonic 80.4900 117.3200 # ca-na-cc
+angle_coeff 6 harmonic 66.1600 121.8001 # ca-cc-na
+angle_coeff 7 harmonic 67.0200 123.4101 # ca-cc-nd
+angle_coeff 8 harmonic 76.9700 112.0100 # na-cc-nd
+angle_coeff 9 harmonic 86.7900 105.4500 # ca-nd-cc
+angle_coeff 10 harmonic 63.3300 120.7301 # ca-ca-cp
+angle_coeff 11 harmonic 63.7900 118.4100 # ca-cp-ca
+angle_coeff 12 harmonic 61.3000 121.1001 # ca-cp-cp
+angle_coeff 13 harmonic 44.9000 119.8801 # ca-ca-ha
+angle_coeff 14 harmonic 55.2700 125.5101 # ca-na-hn
+angle_coeff 15 harmonic 55.4300 125.6700 # cc-na-hn
+angle_coeff 16 harmonic 44.7300 119.8200 # cp-ca-ha
+angle_coeff 17 harmonic 48.8600 125.6201 # h5-cc-nd
+angle_coeff 18 harmonic 47.8300 121.7801 # h5-cc-na
+angle_coeff 19 harmonic 83.1100 110.4800 # cc-na-cc
+angle_coeff 20 harmonic 87.3500 105.3700 # cc-nd-cd
+angle_coeff 21 harmonic 72.8100 106.7500 # cd-cc-na
+angle_coeff 22 harmonic 71.4500 111.5800 # cc-cd-nd
+angle_coeff 23 harmonic 47.9900 121.0101 # h4-cc-na
+angle_coeff 24 harmonic 44.2000 127.6401 # cc-cd-h4
+angle_coeff 25 harmonic 43.9500 129.1101 # cd-cc-h4
+angle_coeff 26 harmonic 48.2000 121.2001 # h4-cd-nd
+
+# Dihedral Coefficients (deduplicated across all topologies and copies)
+dihedral_coeff 1 fourier 1 3.6250 2 180.0001 # ca-ca-ca-ca
+dihedral_coeff 2 fourier 1 3.6250 2 180.0001 # ca-ca-ca-cc
+dihedral_coeff 3 fourier 1 1.0975 2 180.0001 # ca-ca-cc-na
+dihedral_coeff 4 fourier 3 0.7500 3 180.0001 0.8200 1 180.0001 1.0000 2 180.0001 # ca-ca-cc-nd
+dihedral_coeff 5 fourier 1 3.6250 2 180.0001 # na-ca-ca-nd
+dihedral_coeff 6 fourier 1 3.6250 2 180.0001 # ca-ca-ca-nd
+dihedral_coeff 7 fourier 1 3.6250 2 180.0001 # ca-ca-ca-na
+dihedral_coeff 8 fourier 1 4.8000 2 180.0001 # ca-ca-nd-cc
+dihedral_coeff 9 fourier 1 3.6250 2 180.0001 # ca-ca-ca-cp
+dihedral_coeff 10 fourier 1 3.6250 2 180.0001 # cp-ca-ca-nd
+dihedral_coeff 11 fourier 1 0.6130 2 180.0001 # ca-ca-na-cc
+dihedral_coeff 12 fourier 1 1.7000 2 180.0001 # ca-cc-na-ca
+dihedral_coeff 13 fourier 1 1.7000 2 180.0001 # ca-na-cc-nd
+dihedral_coeff 14 fourier 1 4.7500 2 180.0001 # ca-cc-nd-ca
+dihedral_coeff 15 fourier 1 4.7500 2 180.0001 # ca-nd-cc-na
+dihedral_coeff 16 fourier 1 3.6250 2 180.0001 # ca-ca-cp-ca
+dihedral_coeff 17 fourier 1 3.6250 2 180.0001 # ca-ca-cp-cp
+dihedral_coeff 18 fourier 1 0.7650 2 180.0001 # ca-cp-cp-ca
+dihedral_coeff 19 fourier 1 3.6250 2 180.0001 # cp-ca-ca-na
+dihedral_coeff 20 fourier 1 3.6250 2 180.0001 # ha-ca-ca-ha
+dihedral_coeff 21 fourier 1 3.6250 2 180.0001 # ca-ca-ca-ha
+dihedral_coeff 22 fourier 1 3.6250 2 180.0001 # cc-ca-ca-ha
+dihedral_coeff 23 fourier 1 3.6250 2 180.0001 # ha-ca-ca-nd
+dihedral_coeff 24 fourier 1 0.3000 2 180.0001 # ca-ca-na-hn
+dihedral_coeff 25 fourier 1 3.6250 2 180.0001 # ha-ca-ca-na
+dihedral_coeff 26 fourier 1 1.7000 2 180.0001 # ca-cc-na-hn
+dihedral_coeff 27 fourier 1 1.7000 2 180.0001 # hn-na-cc-nd
+dihedral_coeff 28 fourier 1 3.6250 2 180.0001 # ca-cp-ca-ha
+dihedral_coeff 29 fourier 1 3.6250 2 180.0001 # cp-cp-ca-ha
+dihedral_coeff 30 fourier 1 3.6250 2 180.0001 # cp-ca-ca-ha
+dihedral_coeff 31 fourier 1 4.7500 2 180.0001 # ca-nd-cc-h5
+dihedral_coeff 32 fourier 1 1.7000 2 180.0001 # ca-na-cc-h5
+dihedral_coeff 33 fourier 1 1.7000 2 180.0001 # h5-cc-na-hn
+dihedral_coeff 34 fourier 1 10.5000 2 180.0001 # h5-na-cc-nd
+dihedral_coeff 35 fourier 1 1.7000 2 180.0001 # cc-na-cc-cd
+dihedral_coeff 36 fourier 1 4.7500 2 180.0001 # cc-cd-nd-cc
+dihedral_coeff 37 fourier 1 4.7500 2 180.0001 # cd-nd-cc-na
+dihedral_coeff 38 fourier 1 4.0000 2 180.0001 # na-cc-cd-nd
+dihedral_coeff 39 fourier 1 1.7000 2 180.0001 # cc-na-cc-nd
+dihedral_coeff 40 fourier 1 1.7000 2 180.0001 # cc-na-cc-h4
+dihedral_coeff 41 fourier 1 4.7500 2 180.0001 # cc-nd-cd-h4
+dihedral_coeff 42 fourier 1 4.0000 2 180.0001 # h4-cd-cc-na
+dihedral_coeff 43 fourier 1 1.7000 2 180.0001 # cc-na-cc-h5
+dihedral_coeff 44 fourier 1 1.7000 2 180.0001 # cd-cc-na-hn
+dihedral_coeff 45 fourier 1 4.7500 2 180.0001 # cd-nd-cc-h5
+dihedral_coeff 46 fourier 1 4.0000 2 180.0001 # h4-cc-cd-nd
+dihedral_coeff 47 fourier 1 4.0000 2 180.0001 # h4-cc-cd-h4
+dihedral_coeff 48 fourier 1 1.7000 2 180.0001 # h4-cc-na-hn
+dihedral_coeff 49 fourier 1 1.1000 2 180.0001 # cc-cc-na-hn
+dihedral_coeff 50 fourier 1 10.5000 2 180.0001 # cd-h4-cc-na
+dihedral_coeff 51 fourier 1 10.5000 2 180.0001 # cc-h4-cd-nd
+
+# Added by react_molecule.py for new bond(s)
+bond_coeff 16 260.805151 1.989182 # fe-nd
+
+# Added by react_molecule.py for new angle(s)
+angle_coeff 27 cosine/periodic 76.309705 -1 3 # ca-nd-fe
+angle_coeff 28 cosine/periodic 76.309705 -1 3 # cc-nd-fe
+angle_coeff 29 cosine/periodic 76.309705 -1 3 # cd-nd-fe
+angle_coeff 30 cosine/periodic 144.801568 1 4 # nd-fe-nd
+
+# Added by react_molecule.py for new dihedral(s)
+dihedral_coeff 52 harmonic 3.368555 -1 2 # ca-ca-nd-fe
+dihedral_coeff 53 harmonic 3.368555 -1 2 # ca-cc-nd-fe
+dihedral_coeff 54 harmonic 3.368555 -1 2 # fe-nd-cc-na
+dihedral_coeff 55 harmonic 3.368555 -1 2 # fe-nd-cc-h5
+dihedral_coeff 56 harmonic 3.368555 -1 2 # cc-cd-nd-fe
+dihedral_coeff 57 harmonic 3.368555 -1 2 # fe-nd-cd-h4
+
+# Added by react_molecule.py for new improper(s)
+improper_coeff 1 fourier 2.000000 1.000000 -1.000000 0.000000 0 # nd-ca-fe-cc
+improper_coeff 2 fourier 2.000000 1.000000 -1.000000 0.000000 0 # nd-cc-fe-ca
+improper_coeff 3 fourier 2.000000 1.000000 -1.000000 0.000000 0 # nd-fe-cc-ca
+improper_coeff 4 fourier 2.000000 1.000000 -1.000000 0.000000 0 # nd-cc-fe-cd
+improper_coeff 5 fourier 2.000000 1.000000 -1.000000 0.000000 0 # nd-cd-fe-cc
+improper_coeff 6 fourier 2.000000 1.000000 -1.000000 0.000000 0 # nd-fe-cc-cd
