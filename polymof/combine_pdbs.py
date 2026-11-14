@@ -7,6 +7,9 @@ combine_pdbs.py - Combine atoms from multiple PDB files into a single PDB file.
   sequentially starting at 1.
 - Combines CONECT records from all input files, renumbering the referenced
   atom serial numbers to match the new numbering.
+- Writes a CRYST1 record for a rectangular (90/90/90, P 1) box large enough
+  that no atom is within min_dist of any box face; atoms are shifted so the
+  box origin is at one corner.
 - All other record types (HEADER, REMARK, SEQRES, etc.) are dropped.
 - Molecules 2, 3, ... are translated along the X axis so that none of their
   atoms lie within a minimum distance (default 5 Angstrom) of any atom
@@ -262,6 +265,20 @@ def main():
 
     translations = compute_placements(coord_arrays, args.min_dist)
 
+    # Rectangular box: shift everything so the minimum corner of the atoms
+    # sits at (min_dist, min_dist, min_dist), and make the box extend
+    # min_dist beyond the maximum corner, so no atom is within min_dist of
+    # any box face.
+    placed = [c + t for c, t in zip(coord_arrays, translations) if len(c)]
+    if placed:
+        allpts = np.vstack(placed)
+        lo, hi = allpts.min(axis=0), allpts.max(axis=0)
+    else:
+        lo = hi = np.zeros(3)
+    box_shift = args.min_dist - lo
+    translations = [t + box_shift for t in translations]
+    box = (hi - lo) + 2 * args.min_dist
+
     # Collect requested extra bonds up front so we can fail fast on bad
     # input before doing any work.
     n_molecules = len(args.inputs)
@@ -333,6 +350,8 @@ def main():
             out_conect_lines.extend(format_conect_lines(serial, extra_bonds[serial]))
 
     with open(args.output, "w") as out:
+        out.write("CRYST1{:9.3f}{:9.3f}{:9.3f}{:7.2f}{:7.2f}{:7.2f} {:<11}{:>4}\n"
+                  .format(box[0], box[1], box[2], 90.0, 90.0, 90.0, "P 1", 1))
         for line in out_atom_lines:
             out.write(line + "\n")
         out.write("TER\n")
