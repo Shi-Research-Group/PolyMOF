@@ -1,0 +1,22 @@
+Wrote 120 atoms and 113 CONECT lines from 3 molecule(s) to FE-3mer1-IM.pdb
+==============================
+*** Open Babel Warning  in PerceiveBondOrders
+  Failed to kekulize aromatic bonds in OBMol::PerceiveBondOrders (title is FE-3mer1-IM.pdb)
+
+1 molecule converted
+totatomlen = 120
+setting cell
+setting graph
+compute_topology_information()
+func: cartesian_coordinates; Elps. 0.001s
+func: min_img_distances; Elps. 0.053s
+WARNING: bonded atoms 1 and 28 are 8.976 Angstroms apart. This probably has something to do with the redefinition of the unitcell to a supercell. Please contact the developers!
+WARNING: bonded atoms 1 and 116 are 13.011 Angstroms apart. This probably has something to do with the redefinition of the unitcell to a supercell. Please contact the developers!
+func: compute_bonding; Elps. 0.062s
+func: init_typing; Elps. 0.083s
+func: bond_typing; Elps. 0.083s
+func: angles; Elps. 0.083s
+func: dihedrals; Elps. 0.084s
+func: improper_dihedrals; Elps. 0.084s
+splitting graph
+Files created! -> /home/andrew/PolyMOF/template/git2/PolyMOF/examples/lammps-interface
