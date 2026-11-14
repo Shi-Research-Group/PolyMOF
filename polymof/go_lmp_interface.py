@@ -14,7 +14,7 @@ class Parameters:
 
         # Force field options
         self.force_field = 'UFF'
-        self.mol_ff = None
+        self.mol_ff = 'UFF'
         self.h_bonding = False
         self.dreid_bond_type = 'harmonic'
         self.fix_metal = False
@@ -25,7 +25,7 @@ class Parameters:
         self.thermal_scaling = False
         self.npt = False
         self.nvt = False
-        self.cutoff = 12.5
+        self.cutoff = 5
         self.replication = None
         self.orthogonalize = False
         self.random_vel = False
@@ -56,7 +56,7 @@ class Parameters:
             print('%-15s: %s' % (v, getattr(self, v)))
 
 if len(sys.argv) < 2:
-    print("usage: go-lammps-interface file.cif")
+    print("usage: go-lammps-interface file.cif [type:ufftype]")
     sys.exit(1)
 
 infile = sys.argv[1]
@@ -69,6 +69,11 @@ par = Parameters(infile)
 
 sim = LammpsSimulation(par)
 cell, graph = from_CIF(par.cif_file)
+if len(sys.argv) == 3:
+    atomtype, ufftype = sys.argv[2].split(":")
+    for n in graph.nodes:
+        if graph.nodes[n]['element'] == atomtype:
+            graph.nodes[n]['force_field_type'] = ufftype
 sim.set_cell(cell)
 sim.set_graph(graph)
 
