@@ -13,8 +13,8 @@ class Parameters:
         self.output_raspa = False
 
         # Force field options
-        self.force_field = 'UFF'
-        self.mol_ff = 'UFF'
+        self.force_field = 'UFF4MOF'
+        self.mol_ff = 'UFF4MOF'
         self.h_bonding = False
         self.dreid_bond_type = 'harmonic'
         self.fix_metal = False
