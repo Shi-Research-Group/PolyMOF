@@ -255,7 +255,7 @@ def fix_reactions():
         print("I do not see a mol directory in my parent directory")
         print("And I am too cowardly to assume I should create my own")
         sys.exit(1)
-    if Path("mol").is_dir():
+    if Path("mol").is_dir() and not Path("mol").is_symlink():
         print("I should not have a real mol subdirectory")
         sys.exit(1)
     if not Path("mol").is_symlink():
