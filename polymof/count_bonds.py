@@ -33,7 +33,7 @@ def parse_args():
     if len(bits) != 2 or len(bits[0]) != 1 or len(bits[1]) != 1 or bits[0] == bits[1]:
       parser.error("invalid map " + args.map[j])
   if len(args.reactions_files) != len(args.logs):
-    parser.error("Number of reactions files ("+str(len(args.reactions_files))+") must match number of log files ("+str(len(args.logs)))
+    parser.error("Number of reactions files ("+str(len(args.reactions_files))+") must match number of log files ("+str(len(args.logs))+")")
   for rf in args.reactions_files:
     if not os.path.exists(rf):
       parser.error("Reaction file "+rf+" must exist")
@@ -81,14 +81,14 @@ def parse_reactions(reactions_file, map):
     sys.exit(1)
   return allReactions
 
-def getNumReactants(nBonds, allReactions):
+def getNumReactants(nBonds, allReactions, nvst):
 
   nReactants = None
 
   if not nBonds:
     nReactants = len(allReactions)
   elif re.compile("\\d+").match(nBonds):
-    if args.nvst:
+    if nvst:
       print("Cannot get n vs. t while specifying n")
       sys.exit(1)
     nReactants = int(nBonds) + 1
@@ -221,7 +221,7 @@ def count_bonds(logs, reactions_files, reactant_map, pathways, nvst, n, centers)
       if not pathways and not nvst:
         print(str(sum([len(iAllReactions[i]) for i in range(len(iAllReactions))]))+" reactions")
 
-      nReactants = getNumReactants(n, iAllReactions)
+      nReactants = getNumReactants(n, iAllReactions, nvst)
 
     iStart, iStop, iAllReactions = getStartStop(nReactants, iAllReactions)
 
