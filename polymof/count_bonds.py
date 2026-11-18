@@ -254,6 +254,8 @@ def count_bonds(logs, reactions_files, reactant_map, pathways, nvst, n, centers)
 
   if not pathways:
     print("Reaction counts")
+  else:
+    print("M", centers)
   for r,c in reactionsCounts.items():
     print(r, c)
   if pathways:

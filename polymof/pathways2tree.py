@@ -91,6 +91,8 @@ def build_graph(nodes):
     canon_of = {}
     for labels in groups.values():
         rep = min(labels)
+        # Display name: first character kept, remaining characters sorted
+        rep = rep[0] + "".join(sorted(rep[1:]))
         for label in labels:
             canon_of[label] = rep
 
@@ -119,10 +121,65 @@ def build_graph(nodes):
     return root_id, node_ids, sorted(edges)
 
 
-def to_dot(root_id, node_ids, edges):
+NAMED_COLORS = {
+    "red": (255, 0, 0), "green": (0, 160, 0), "blue": (0, 0, 255),
+    "yellow": (255, 255, 0), "orange": (255, 165, 0), "purple": (128, 0, 128),
+    "cyan": (0, 255, 255), "magenta": (255, 0, 255), "pink": (255, 192, 203),
+    "brown": (165, 42, 42), "gray": (128, 128, 128), "grey": (128, 128, 128),
+    "black": (0, 0, 0), "white": (255, 255, 255), "gold": (255, 215, 0),
+    "lightblue": (173, 216, 230), "lightgreen": (144, 238, 144),
+    "salmon": (250, 128, 114), "teal": (0, 128, 128),
+}
+
+
+def parse_color(text):
+    """Parse '#rrggbb' or a name from NAMED_COLORS into an (r, g, b) tuple."""
+    t = text.strip().lower()
+    if t.startswith("#") and len(t) == 7:
+        try:
+            return tuple(int(t[i:i + 2], 16) for i in (1, 3, 5))
+        except ValueError:
+            pass
+    elif t in NAMED_COLORS:
+        return NAMED_COLORS[t]
+    raise ValueError(
+        f"unknown color {text!r}: use #rrggbb or one of: {', '.join(sorted(NAMED_COLORS))}"
+    )
+
+
+def parse_letter_colors(specs):
+    """Turn ['I=red', 'P=#00ff00'] into {'I': (r, g, b), 'P': (r, g, b)}."""
+    colors = {}
+    for spec in specs or []:
+        letter, sep, color = spec.partition("=")
+        if not sep or len(letter) != 1:
+            raise ValueError(f"--color expects LETTER=COLOR (e.g. I=red), got {spec!r}")
+        colors[letter] = parse_color(color)
+    return colors
+
+
+def node_fill(label, letter_colors):
+    """
+    Blend the colors of the letters in the label (excluding the first,
+    root, character), weighted by how often each appears. Returns
+    (fill_hex, font_hex) or None if no letter in the label has a color.
+    """
+    parts = [letter_colors[c] for c in label[1:] if c in letter_colors]
+    if not parts:
+        return None
+    r, g, b = (sum(p[i] for p in parts) / len(parts) for i in range(3))
+    # Pick black or white text depending on fill brightness
+    font = "#000000" if 0.299 * r + 0.587 * g + 0.114 * b > 140 else "#ffffff"
+    return f"#{round(r):02x}{round(g):02x}{round(b):02x}", font
+
+
+def to_dot(root_id, node_ids, edges, max_width=8.0, letter_colors=None,
+           numbers="none", root_total=0, positions=None):
+    letter_colors = letter_colors or {}
     lines = [
         "digraph pathways {",
         '  rankdir=TB;',
+        '  splines=line;' if positions else '',
         '  node [shape=box, style=rounded, fontname="Helvetica"];',
         '  edge [fontname="Helvetica"];',
     ]
@@ -130,17 +187,80 @@ def to_dot(root_id, node_ids, edges):
     def node_id(label):
         return f'n_{label}'
 
+    # entered = total arriving at a node (the root's own count for the root);
+    # terminated = entered minus everything that went on to children.
+    entered = {label: 0 for label in node_ids}
+    entered[root_id] = root_total
+    left = {label: 0 for label in node_ids}
+    for parent_label, child_label, edge_value in edges:
+        entered[child_label] += edge_value
+        left[parent_label] += edge_value
+
     for label in node_ids:
         display = label if label else "(root)"
-        lines.append(f'  {node_id(label)} [label="{display}"];')
+        attrs = f'label="{display}"'
+        if numbers == "entered":
+            attrs = f'label="{display}\\n{entered[label]}"'
+        elif numbers == "terminated":
+            term = entered[label] - left[label]
+            if term:
+                attrs = f'label="{display}\\n{term}"'
+        fill = node_fill(label, letter_colors)
+        if fill:
+            attrs += f', style="rounded,filled", fillcolor="{fill[0]}", fontcolor="{fill[1]}"'
+        if positions:
+            attrs += f', pos="{positions[label][0]:.1f},{positions[label][1]:.1f}"'
+        lines.append(f'  {node_id(label)} [{attrs}];')
 
-    for parent_label, child_label, edge_value in edges:
+    # Edge thickness is proportional to count (largest edge = max_width),
+    # with a small floor so very small edges stay visible.
+    values = [v for _, _, v in edges]
+    top = max(values) if values else 0
+
+    def penwidth(value):
+        if top == 0:
+            return 1.0
+        return max(0.5, max_width * value / top)
+
+    for i, (parent_label, child_label, edge_value) in enumerate(edges):
+        attrs = f'penwidth={penwidth(edge_value):.2f}'
+        if positions:
+            # neato -n ignores edge label positions, so draw the number as a
+            # borderless node beside the edge midpoint, on its outer side
+            (x1, y1), (x2, y2) = positions[parent_label], positions[child_label]
+            offset = 12 + penwidth(edge_value) / 2
+            side = -1 if x2 < x1 else 1
+            lines.append(
+                f'  e{i} [shape=plaintext, label="{edge_value}", width=0, height=0, '
+                f'margin=0.02, pos="{(x1 + x2) / 2 + side * offset:.1f},{(y1 + y2) / 2:.1f}"];'
+            )
+        else:
+            attrs += f', label="{edge_value}"'
         lines.append(
-            f'  {node_id(parent_label)} -> {node_id(child_label)} [label="{edge_value}"];'
+            f'  {node_id(parent_label)} -> {node_id(child_label)} [{attrs}];'
         )
 
     lines.append("}")
     return "\n".join(lines)
+
+
+def compute_positions(node_ids, dx=110.0, dy=100.0):
+    """
+    Place nodes on a grid so every edge is exactly diagonal: depth sets the
+    vertical position and the letters set the horizontal one (with two
+    distinct letters, the alphabetically first steps left and the second
+    steps right, so equal amounts of each sit in the middle).
+    Returns {label: (x, y)} in points, or None if there are more than two
+    distinct letters (a grid would put different nodes at the same spot).
+    """
+    letters = sorted({c for label in node_ids for c in label[1:]})
+    if len(letters) > 2:
+        return None
+    step = {c: (i - (len(letters) - 1) / 2) * 2 for i, c in enumerate(letters)}
+    return {
+        label: (dx / 2 * sum(step[c] for c in label[1:]), -dy * (len(label) - 1))
+        for label in node_ids
+    }
 
 
 def check_pathways(nodes):
@@ -177,19 +297,21 @@ def check_pathways(nodes):
     return ok
 
 
-def render(dot_source, output_path):
+def render(dot_source, output_path, fixed_positions=False):
     fmt = Path(output_path).suffix.lstrip(".") or "png"
+    # neato -n uses the pos attributes as given; dot does its own layout
+    cmd = ["neato", "-n"] if fixed_positions else ["dot"]
     try:
         subprocess.run(
-            ["dot", f"-T{fmt}", "-o", str(output_path)],
+            cmd + [f"-T{fmt}", "-o", str(output_path)],
             input=dot_source,
             text=True,
             check=True,
         )
     except FileNotFoundError:
-        sys.exit("error: Graphviz 'dot' executable not found; please install graphviz.")
+        sys.exit(f"error: Graphviz '{cmd[0]}' executable not found; please install graphviz.")
     except subprocess.CalledProcessError as e:
-        sys.exit(f"error: 'dot' failed with exit code {e.returncode}")
+        sys.exit(f"error: '{cmd[0]}' failed with exit code {e.returncode}")
 
 
 def main():
@@ -205,12 +327,37 @@ def main():
         help="Optional path to also save the intermediate Graphviz .dot source.",
     )
     parser.add_argument(
+        "--max-width",
+        type=float,
+        default=8.0,
+        help="Line width (points) of the edge with the largest count; other edges "
+        "are proportional to their count, with a 0.5 minimum (default: 8). Must be >= 1.",
+    )
+    parser.add_argument(
+        "--color",
+        action="append",
+        metavar="LETTER=COLOR",
+        help="Color for a letter, e.g. --color I=red --color P=#0080ff (repeatable). "
+        "Each node is filled with the average color of the letters in its label "
+        "(after the first character). Letters without a color are ignored.",
+    )
+    parser.add_argument(
+        "--numbers",
+        choices=["none", "entered", "terminated"],
+        default="none",
+        help="Number inside each node: 'none' (default); 'entered' = total that "
+        "arrived at the node (sum of incoming edges; the root shows its own count); "
+        "'terminated' = entered minus what continued to children (blank if 0).",
+    )
+    parser.add_argument(
         "--check",
         action="store_true",
         help="Instead of drawing an image, check that each node's children's "
         "counts sum to no more than the node's own count, and report violations.",
     )
     args = parser.parse_args()
+    if args.max_width < 1:
+        parser.error("--max-width must be >= 1")
 
     nodes = parse_pathways(args.pathways)
 
@@ -219,7 +366,13 @@ def main():
         sys.exit(0 if ok else 1)
 
     root_id, node_ids, edges = build_graph(nodes)
-    dot_source = to_dot(root_id, node_ids, edges)
+    try:
+        letter_colors = parse_letter_colors(args.color)
+    except ValueError as e:
+        parser.error(str(e))
+    positions = compute_positions(node_ids)
+    dot_source = to_dot(root_id, node_ids, edges, args.max_width, letter_colors,
+                        args.numbers, nodes[next(iter(nodes))], positions)
 
     if args.dot_out:
         Path(args.dot_out).write_text(dot_source)
@@ -227,7 +380,7 @@ def main():
     if not args.output:
         args.output = args.pathways + ".png"
 
-    render(dot_source, args.output)
+    render(dot_source, args.output, fixed_positions=positions is not None)
     print(f"Wrote {args.output}")
 
 
