@@ -157,8 +157,9 @@ for s in systems:
         if s['comp'] > 0 and not s['no3'] and not s['fe3']:
             if not Path(reactdir).is_dir():
                 print(str(s), "missing", reactdir)
-                init_reaction(s, basedir, reactdir, replica, False, False, False)
+                init_reaction(s, basedir, reactdir, replica, False, False, False, False)
                 if args.setup:
+                    print("running setup for ", reactdir)
                     os.chdir(reactdir)
                     polymof_setup.main()
                     os.chdir(topdir)
@@ -171,6 +172,7 @@ for s in systems:
                 jstat, jname = check_job(reactdir+"/jlammps", jobs)
                 if jstat == None:
                     if args.setup and (not Path(reactdir+"/mol").is_file() or not Path(reactdir+"/FEX-data.1.lammps").is_file()):
+                        print("running setup for ", reactdir)
                         os.chdir(reactdir)
                         polymof_setup.main()
                         os.chdir(topdir)
@@ -183,7 +185,10 @@ for s in systems:
             if not ndat.is_file() or ndat.stat().st_size < 50:
                 jstat, jname = check_job(reactdir+"/jlammps", jobs)
                 if jstat == None:
-                    print(str(s), "reaction", reactdir, "not done (n.dat missing or too small)")
+                    print(str(s), "reaction", reactdir, "n.dat missing or too small, trying to collect n")
+                    os.chdir(reactdir)
+                    subprocess.run(["cbn"])
+                    os.chdir(topdir)
                 else:
                     allj[jstat].append(jname)
                 continue
@@ -210,7 +215,10 @@ for s in systems:
                         last, last_hours, last_steps, total_steps_from_input = result
                     if loglammps.is_file() and ndat.stat().st_mtime < loglammps.stat().st_mtime:
                         if total_steps_from_input >= params['total_steps']:
-                            print(reactdir, "apparently finished, please update n.dat")
+                            print(reactdir, "apparently finished, please updating n.dat")
+                            os.chdir(reactdir)
+                            subprocess.run(["cbn"])
+                            os.chdir(topdir)
                         elif total_steps_from_input > 0:
                             print(reactdir, "needs more steps ("+str(total_steps_from_input)+")")
                             if args.setup:
@@ -248,8 +256,9 @@ for s in systems:
         if not Path(annealdir).is_dir():
             if s['comp'] == 0:
                 print(str(s), "annealing dir missing", annealdir)
-                init_reaction(s, basedir, annealdir, replica, True, False, False)
+                init_reaction(s, basedir, annealdir, replica, True, False, False, False)
                 if args.setup:
+                    print("running setup for ", annealdir)
                     os.chdir(annealdir)
                     polymof_setup.main()
                     os.chdir(topdir)
@@ -266,6 +275,7 @@ for s in systems:
             jstat, jname = check_job(annealdir+"/jlammps", jobs)
             if jstat == None:
                 if s['comp'] == 0 and (not Path(annealdir+"/box.pdb").is_file() or not Path(annealdir+"/data.lammps").is_file()):
+                    print("running setup for ", annealdir)
                     os.chdir(annealdir)
                     polymof_setup.main()
                     os.chdir(topdir)
