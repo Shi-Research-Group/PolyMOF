@@ -174,7 +174,7 @@ def node_fill(label, letter_colors):
 
 
 def to_dot(root_id, node_ids, edges, max_width=8.0, letter_colors=None,
-           numbers="none", root_total=0, positions=None):
+           numbers="none", root_total=0, positions=None, edge_numbers=True):
     letter_colors = letter_colors or {}
     lines = [
         "digraph pathways {",
@@ -203,8 +203,9 @@ def to_dot(root_id, node_ids, edges, max_width=8.0, letter_colors=None,
             attrs = f'label="{display}\\n{entered[label]}"'
         elif numbers == "terminated":
             term = entered[label] - left[label]
-            if term:
-                attrs = f'label="{display}\\n{term}"'
+            if term and root_total:
+                pct = 100.0 * term / root_total
+                attrs = f'label="{display}\\n{pct:.1f}%"'
         fill = node_fill(label, letter_colors)
         if fill:
             attrs += f', style="rounded,filled", fillcolor="{fill[0]}", fontcolor="{fill[1]}"'
@@ -222,17 +223,39 @@ def to_dot(root_id, node_ids, edges, max_width=8.0, letter_colors=None,
             return 1.0
         return max(0.5, max_width * value / top)
 
+    placed = []  # label positions already used, to keep numbers apart
+
     for i, (parent_label, child_label, edge_value) in enumerate(edges):
         attrs = f'penwidth={penwidth(edge_value):.2f}'
-        if positions:
+        if not edge_numbers:
+            pass
+        elif positions:
             # neato -n ignores edge label positions, so draw the number as a
-            # borderless node beside the edge midpoint, on its outer side
+            # borderless node beside the edge midpoint. Try both sides and keep
+            # the one farther from numbers already placed (ties: outer side).
             (x1, y1), (x2, y2) = positions[parent_label], positions[child_label]
-            offset = 12 + penwidth(edge_value) / 2
-            side = -1 if x2 < x1 else 1
+            offset = 14 + penwidth(edge_value)
+            # Shift toward the parent along the edge so the number is centered
+            # on the visible shaft (the arrowhead takes up the child's end)
+            length = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+            shift = 6.0
+            preferred = -1 if x2 < x1 else 1
+            best = None
+            for side in (preferred, -preferred):
+                lx = (x1 + x2) / 2 + side * offset + shift * (x1 - x2) / length
+                ly = (y1 + y2) / 2 + shift * (y1 - y2) / length
+                clearance = min(
+                    (((lx - px) ** 2 + (ly - py) ** 2) ** 0.5 for px, py in placed),
+                    default=float("inf"),
+                )
+                # require a clear margin before giving up the preferred side
+                if best is None or clearance > best[0] + 1e-9 and best[0] < 28:
+                    best = (clearance, lx, ly)
+            _, lx, ly = best
+            placed.append((lx, ly))
             lines.append(
                 f'  e{i} [shape=plaintext, label="{edge_value}", width=0, height=0, '
-                f'margin=0.02, pos="{(x1 + x2) / 2 + side * offset:.1f},{(y1 + y2) / 2:.1f}"];'
+                f'margin=0.02, pos="{lx:.1f},{ly:.1f}"];'
             )
         else:
             attrs += f', label="{edge_value}"'
@@ -244,7 +267,7 @@ def to_dot(root_id, node_ids, edges, max_width=8.0, letter_colors=None,
     return "\n".join(lines)
 
 
-def compute_positions(node_ids, dx=110.0, dy=100.0):
+def compute_positions(node_ids, dx=82.5, dy=75.0):
     """
     Place nodes on a grid so every edge is exactly diagonal: depth sets the
     vertical position and the letters set the horizontal one (with two
@@ -342,12 +365,19 @@ def main():
         "(after the first character). Letters without a color are ignored.",
     )
     parser.add_argument(
+        "--no-edge-numbers",
+        action="store_true",
+        help="Do not print the count next to each edge (line thickness still shows it).",
+    )
+    parser.add_argument(
         "--numbers",
         choices=["none", "entered", "terminated"],
         default="none",
         help="Number inside each node: 'none' (default); 'entered' = total that "
         "arrived at the node (sum of incoming edges; the root shows its own count); "
-        "'terminated' = entered minus what continued to children (blank if 0).",
+        "'terminated' = percentage of the root count that stopped at the node "
+        "(entered minus what continued to children; blank if 0), so the shown "
+        "percentages sum to 100%%.",
     )
     parser.add_argument(
         "--check",
@@ -372,7 +402,8 @@ def main():
         parser.error(str(e))
     positions = compute_positions(node_ids)
     dot_source = to_dot(root_id, node_ids, edges, args.max_width, letter_colors,
-                        args.numbers, nodes[next(iter(nodes))], positions)
+                        args.numbers, nodes[next(iter(nodes))], positions,
+                        not args.no_edge_numbers)
 
     if args.dot_out:
         Path(args.dot_out).write_text(dot_source)
