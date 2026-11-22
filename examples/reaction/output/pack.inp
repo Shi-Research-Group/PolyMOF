@@ -3,7 +3,7 @@
 
 tolerance 2.0
 
-seed -1
+seed 12345
 
 # The file type of input and output files is PDB
 

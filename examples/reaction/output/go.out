@@ -17,7 +17,7 @@
   Periodic boundary condition activated: 
     Minimum coordinates:     0.00    0.00    0.00
     Maximum coordinates:   180.00  180.00  180.00
-  Seed for random number generator:        10098
+  Seed for random number generator:        12345
   Output file: box.pdb
   Reading coordinate file: FE.pdb
   Reading coordinate file: 10mer0527564.pdb
@@ -112,35 +112,35 @@
   Packing:|0                                                        100%|
           |******
 
-  Restraint-only function value:    4.2320556005581390E-014
-  Maximum violation of the restraints:    2.0556510161677207E-014
+  Restraint-only function value:    4.6507728502766867E-014
+  Maximum violation of the restraints:    1.8818117195152519E-014
 
 --------------------------------------------------------------------------------
 
   Molecules of type:            2
 
   Packing:|0                                                        100%|
-          |***
+          |*********************************************
 
-  Restraint-only function value:    0.0000000000000000     
-  Maximum violation of the restraints:    0.0000000000000000     
+  Restraint-only function value:    1.3179278865463458E-006
+  Maximum violation of the restraints:    1.3179278865463458E-006
 
 --------------------------------------------------------------------------------
 
   Molecules of type:            3
 
   Packing:|0                                                        100%|
-          |*********************************************
+          |************************************
 
-  Restraint-only function value:    4.5129375506118449E-005
-  Maximum violation of the restraints:    4.4992654579473306E-005
+  Restraint-only function value:    9.0547324903953596E-010
+  Maximum violation of the restraints:    9.0547324903953596E-010
 
 --------------------------------------------------------------------------------
 
   Molecules of type:            4
 
   Packing:|0                                                        100%|
-          |************************
+          |******************
 
   Restraint-only function value:    0.0000000000000000     
   Maximum violation of the restraints:    0.0000000000000000     
@@ -150,17 +150,26 @@
   Molecules of type:            5
 
   Packing:|0                                                        100%|
-          |************************
+          |*************************************************************|
+  Fixing bad orientations ...      1 of    160
+  Moving worst molecules ... 
+  Function value before moving molecules:   13120.660296117443     
+  Type         5 molecules with non-zero contributions:  100.00%
+  Moving         1 molecules of type         5
+  New positions will be based on good molecules (movebadrandom is not set) 
+   Moving:|0                                                        100%|
+          |*************************************************************|
+  Function value after moving molecules:   2.2316964106071013E-003
 
-  Restraint-only function value:    1.9965495575425141E-002
-  Maximum violation of the restraints:    7.5084681560511398E-003
+  Restraint-only function value:    2.2316964106071013E-003
+  Maximum violation of the restraints:    7.1501647466204379E-004
 
 --------------------------------------------------------------------------------
 
   Molecules of type:            6
 
   Packing:|0                                                        100%|
-          |*********
+          |************************
 
   Restraint-only function value:    0.0000000000000000     
   Maximum violation of the restraints:    0.0000000000000000     
@@ -170,7 +179,7 @@
   Molecules of type:            7
 
   Packing:|0                                                        100%|
-          |******
+          |************************
 
   Restraint-only function value:    0.0000000000000000     
   Maximum violation of the restraints:    0.0000000000000000     
@@ -180,18 +189,18 @@
   Molecules of type:            8
 
   Packing:|0                                                        100%|
-          |******************************
+          |***************************
 
-  Restraint-only function value:    3.9012706773993645E-005
-  Maximum violation of the restraints:    3.3617128406870335E-005
+  Restraint-only function value:    2.6629585462548031E-003
+  Maximum violation of the restraints:    1.3576221092857865E-003
 
 --------------------------------------------------------------------------------
 
   Rescaling maximum and minimum coordinates... 
   Mininum and maximum coordinates after constraint fitting: 
-   x: [   -3.3120819991877813E-003 ,    180.08665141750745       ] 
-   y: [   -6.7076564148347154E-003 ,    180.00232267084763       ] 
-   z: [   -4.7589117703028079E-003 ,    180.00000003817448       ] 
+   x: [   -3.5896690900160122E-003 ,    180.03684592391684       ] 
+   y: [   -1.4467191361835786E-002 ,    180.02673979197118       ] 
+   z: [   -6.2879504320793595E-004 ,    180.02960635273558       ] 
   Computing size of patches... 
   Number of cells in each direction and cell sides: 
    x:           81  cells of size    2.2222222222222223     
@@ -218,7 +227,7 @@
   Molecules of type:            2
   Adjusting random positions to fit the constraints. 
   Packing:|0                                                        100%|
-          |*********
+          |***************************
   Restraint-only function value:    0.0000000000000000     
   Maximum violation of the restraints:    0.0000000000000000     
 
@@ -227,16 +236,16 @@
   Molecules of type:            3
   Adjusting random positions to fit the constraints. 
   Packing:|0                                                        100%|
-          |***************************
-  Restraint-only function value:    0.0000000000000000     
-  Maximum violation of the restraints:    0.0000000000000000     
+          |************************
+  Restraint-only function value:    4.0608571486864144E-008
+  Maximum violation of the restraints:    4.0608571486864144E-008
 
 --------------------------------------------------------------------------------
 
   Molecules of type:            4
   Adjusting random positions to fit the constraints. 
   Packing:|0                                                        100%|
-          |***************
+          |************
   Restraint-only function value:    0.0000000000000000     
   Maximum violation of the restraints:    0.0000000000000000     
 
@@ -246,12 +255,21 @@
   Adjusting random positions to fit the constraints. 
   Packing:|0                                                        100%|
           |***************************
-  Restraint-only function value:    9.5687339221273027E-003
-  Maximum violation of the restraints:    3.1689840859766235E-003
+  Restraint-only function value:    3.7090223512962046E-003
+  Maximum violation of the restraints:    3.5913366754804785E-003
 
 --------------------------------------------------------------------------------
 
   Molecules of type:            6
+  Adjusting random positions to fit the constraints. 
+  Packing:|0                                                        100%|
+          |*********************
+  Restraint-only function value:    1.2232789980174245E-005
+  Maximum violation of the restraints:    1.2232789980174245E-005
+
+--------------------------------------------------------------------------------
+
+  Molecules of type:            7
   Adjusting random positions to fit the constraints. 
   Packing:|0                                                        100%|
           |***
@@ -260,25 +278,16 @@
 
 --------------------------------------------------------------------------------
 
-  Molecules of type:            7
-  Adjusting random positions to fit the constraints. 
-  Packing:|0                                                        100%|
-          |******
-  Restraint-only function value:    1.3384054539501860E-003
-  Maximum violation of the restraints:    1.3384054539501860E-003
-
---------------------------------------------------------------------------------
-
   Molecules of type:            8
   Adjusting random positions to fit the constraints. 
   Packing:|0                                                        100%|
           |***
-  Restraint-only function value:    8.3877286159341202E-003
-  Maximum violation of the restraints:    8.3877286159341202E-003
+  Restraint-only function value:    0.0000000000000000     
+  Maximum violation of the restraints:    0.0000000000000000     
 
 ################################################################################
 
-  Objective function at initial point:    76.807581822799307     
+  Objective function at initial point:    11.556581521950868     
 
 ################################################################################
 
@@ -326,9 +335,9 @@
   Current point written to file: box.pdb
 --------------------------------------------------------------------------------
   Packing solved for molecules of type           3
-  Objective function value:    0.0000000000000000     
+  Objective function value:    4.0608571486864144E-008
   Maximum violation of target distance:    0.0000000000000000     
-  Max. constraint violation:    0.0000000000000000     
+  Max. constraint violation:    4.0608571486864144E-008
 --------------------------------------------------------------------------------
 
 ################################################################################
@@ -360,9 +369,9 @@
   Current point written to file: box.pdb
 --------------------------------------------------------------------------------
   Packing solved for molecules of type           5
-  Objective function value:    9.5687339221273027E-003
+  Objective function value:    3.7090223512962046E-003
   Maximum violation of target distance:    0.0000000000000000     
-  Max. constraint violation:    3.1689840859766235E-003
+  Max. constraint violation:    3.5913366754804785E-003
 --------------------------------------------------------------------------------
 
 ################################################################################
@@ -377,9 +386,9 @@
   Current point written to file: box.pdb
 --------------------------------------------------------------------------------
   Packing solved for molecules of type           6
-  Objective function value:    0.0000000000000000     
+  Objective function value:    1.2232789980174245E-005
   Maximum violation of target distance:    0.0000000000000000     
-  Max. constraint violation:    0.0000000000000000     
+  Max. constraint violation:    1.2232789980174245E-005
 --------------------------------------------------------------------------------
 
 ################################################################################
@@ -394,9 +403,9 @@
   Current point written to file: box.pdb
 --------------------------------------------------------------------------------
   Packing solved for molecules of type           7
-  Objective function value:    1.3384054539501860E-003
+  Objective function value:    0.0000000000000000     
   Maximum violation of target distance:    0.0000000000000000     
-  Max. constraint violation:    1.3384054539501860E-003
+  Max. constraint violation:    0.0000000000000000     
 --------------------------------------------------------------------------------
 
 ################################################################################
@@ -406,14 +415,26 @@
 ################################################################################
 
 
-  Initial approximation is a solution. Nothing to do. 
+--------------------------------------------------------------------------------
 
-  Current point written to file: box.pdb
+  Starting GENCAN loop:            0
+  Scaling radii by:    1.1000000000000001     
+
+  Packing:|0                                                        100%|
+          |***
+
+  Function value from last GENCAN loop: f = .00000E+00
+  Best function value before: f = .24911E+01
+  Improvement from best function value:    99.99 %
+  Improvement from last loop:    99.99 %
+  Maximum violation of target distance:     0.000000
+  Maximum violation of the constraints: .00000E+00
+  Current structure written to file: box.pdb
 --------------------------------------------------------------------------------
   Packing solved for molecules of type           8
-  Objective function value:    8.3877286159341202E-003
+  Objective function value:    0.0000000000000000     
   Maximum violation of target distance:    0.0000000000000000     
-  Max. constraint violation:    8.3877286159341202E-003
+  Max. constraint violation:    0.0000000000000000     
 --------------------------------------------------------------------------------
 
 ################################################################################
@@ -429,21 +450,72 @@
   Scaling radii by:    1.1000000000000001     
 
   Packing:|0                                                        100%|
-          |***************************************
+          |*************************************************************|
 
-  Function value from last GENCAN loop: f = .14879E-01
-  Best function value before: f = .76808E+02
-  Improvement from best function value:    99.98 %
-  Improvement from last loop:    99.98 %
+  Function value from last GENCAN loop: f = .52665E+00
+  Best function value before: f = .90655E+01
+  Improvement from best function value:    94.19 %
+  Improvement from last loop:    94.19 %
   Maximum violation of target distance:     0.000000
-  Maximum violation of the constraints: .51009E-02
+  Maximum violation of the constraints: .51319E+00
+
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+  Starting GENCAN loop:            1
+  Scaling radii by:    1.1000000000000001     
+
+  Packing:|0                                                        100%|
+          |*************************************************************|
+
+  Function value from last GENCAN loop: f = .51632E+00
+  Best function value before: f = .52665E+00
+  Improvement from best function value:     1.96 %
+  Improvement from last loop:     1.96 %
+  Maximum violation of target distance:     0.000000
+  Maximum violation of the constraints: .50476E+00
+
+--------------------------------------------------------------------------------
+
+  Moving worst molecules ... 
+  Function value before moving molecules:  0.51631820614910884     
+  Type         1 molecules with non-zero contributions:    0.00%
+  Type         2 molecules with non-zero contributions:    0.00%
+  Type         3 molecules with non-zero contributions:  100.00%
+  Moving         1 molecules of type         3
+  New positions will be based on good molecules (movebadrandom is not set) 
+   Moving:|0                                                        100%|
+          |*************************************************************|
+  Type         4 molecules with non-zero contributions:    0.00%
+  Type         5 molecules with non-zero contributions:    0.00%
+  Type         6 molecules with non-zero contributions:    0.00%
+  Type         7 molecules with non-zero contributions:    0.00%
+  Type         8 molecules with non-zero contributions:    0.00%
+  Function value after moving molecules:   100.93612858604980     
+
+--------------------------------------------------------------------------------
+
+  Starting GENCAN loop:            2
+  Scaling radii by:    1.0000000000000000     
+
+  Packing:|0                                                        100%|
+          |******************************************************
+
+  Function value from last GENCAN loop: f = .00000E+00
+  Best function value before: f = .51632E+00
+  Improvement from best function value:    99.99 %
+  Improvement from last loop:    99.99 %
+  Maximum violation of target distance:     0.000000
+  Maximum violation of the constraints: .00000E+00
 
 ################################################################################
 
                                  Success! 
-              Final objective function value: .14879E-01
+              Final objective function value: .00000E+00
               Maximum violation of target distance:   0.000000
-              Maximum violation of the constraints: .51009E-02
+              Maximum violation of the constraints: .00000E+00
 
 --------------------------------------------------------------------------------
 
@@ -461,7 +533,7 @@
 
 --------------------------------------------------------------------------------
 
-   Running time:   0.271432012      seconds. 
+   Running time:   0.439464003      seconds. 
 
 --------------------------------------------------------------------------------
 
@@ -508,11 +580,11 @@ Writing atom labels section...
 Writing connectivity type labels section...
 Writing masses section...
 Charge check topo 1: 0.000000 matches target 0.000000
-Charge check topo 2: 0.000000 matches target 0.000000
-Charge check topo 3: 0.000000 matches target 0.000000
-Charge check topo 4: -0.000000 matches target 0.000000
-Charge check topo 5: 0.000000 matches target 0.000000
-Charge check topo 6: -0.000000 matches target 0.000000
+Charge check topo 2: -0.000000 matches target 0.000000
+Charge check topo 3: -0.000000 matches target 0.000000
+Charge check topo 4: 0.000000 matches target 0.000000
+Charge check topo 5: -0.000000 matches target 0.000000
+Charge check topo 6: 0.000000 matches target 0.000000
 Charge check topo 7: 0.000000 matches target 0.000000
 Charge adjust topo 8: actual 0.001000 -> target 0.000000 (shift -0.000111/atom)
 Total charge check passed: -0.000000 matches expected 0.000000
@@ -535,9 +607,9 @@ Found 276 initiator atom(s).
 Found 6 unique fragment(s) (--max-bonds=3).
   Unique fragment #1: InitiatorID 1 (12 initiator atom(s) share this fragment)
   Unique fragment #2: InitiatorID 27 (58 initiator atom(s) share this fragment)
-  Unique fragment #3: InitiatorID 38 (2 initiator atom(s) share this fragment)
-  Unique fragment #4: InitiatorID 61 (56 initiator atom(s) share this fragment)
-  Unique fragment #5: InitiatorID 402 (4 initiator atom(s) share this fragment)
+  Unique fragment #3: InitiatorID 39 (2 initiator atom(s) share this fragment)
+  Unique fragment #4: InitiatorID 63 (56 initiator atom(s) share this fragment)
+  Unique fragment #5: InitiatorID 401 (4 initiator atom(s) share this fragment)
   Unique fragment #6: InitiatorID 2189 (144 initiator atom(s) share this fragment)
 Generating reaction data file
 Missing dihedral parameters for
@@ -550,5 +622,6 @@ Missing improper parameters for
 Wrote LAMMPS reaction input to in.reactions.full.1 (560 molecule line(s), 280 react clause(s))
 Wrote merged parameter file to FEX-parm.lammps (17 new type(s))
 Wrote updated data file to FEX-data.1.lammps (17 new type(s) added to Type Labels sections)
-I do not see a mol directory in my parent directory
-And I am too cowardly to assume I should create my own
+I do not see a symlink to a mol directory.  It may be more convenient
+to store molecule templates and map files in a shared directory and
+symlink to it from all directories.

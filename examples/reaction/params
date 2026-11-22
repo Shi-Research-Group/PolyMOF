@@ -4,3 +4,4 @@ nFe 12
 nIM 144
 molecule 10mer
 total_steps 5000000
+packmol_seed 12345

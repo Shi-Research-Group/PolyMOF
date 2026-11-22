@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# packmol will produce a different configuration every time
-# box.pdb will be different
-# pack.inp and parm.lammps should match.
-# data.lammps should match except for the config
+# packmol seed has been set in params just for reproducibility
+# all output files should be identical
 python ../../polymof/polymof_setup.py

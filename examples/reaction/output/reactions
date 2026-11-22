@@ -2,9 +2,9 @@ Reactants
 
 A data.lammps 1 # 12 fe
 B data.lammps 27 # 58 nd
-C data.lammps 38 # 2 nd
-D data.lammps 61 # 56 nd
-E data.lammps 402 # 4 nd
+C data.lammps 39 # 2 nd
+D data.lammps 63 # 56 nd
+E data.lammps 401 # 4 nd
 F data.lammps 2189 # 144 nd
 
 Reactions
