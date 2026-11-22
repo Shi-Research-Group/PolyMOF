@@ -24,7 +24,7 @@ def readTM(params, file):
             tmlist.append(l.strip())
     params['tm'] = tmlist
     if len(tmlist) != params['nPBI']:
-        print("nPBI is", nPBI, "but", file, "has", len(tmlist))
+        print("nPBI is", params['nPBI'], "from params, but", file, "has", len(tmlist))
         sys.exit(1)
 
 def makeTM(params, file):
@@ -85,13 +85,16 @@ def writePack(params):
         L0 = params['L0']
     else:
         params['L0'] = L0
+    packmol_seed = -1
+    if "packmol_seed" in params:
+        packmol_seed = params["packmol_seed"]
     with open("pack.inp", "w") as f:
         f.write(f"""# All the atoms from diferent molecules will be separated at least 2.0
 # Anstroms at the solution.
 
 tolerance 2.0
 
-seed -1
+seed {packmol_seed}
 
 # The file type of input and output files is PDB
 
@@ -251,23 +254,11 @@ def writeFullReactions():
     writeReactions("reactions", reactants, 6)
 
 def fix_reactions():
-    if not Path("../mol").is_dir():
-        print("I do not see a mol directory in my parent directory")
-        print("And I am too cowardly to assume I should create my own")
-        sys.exit(1)
-    if Path("mol").is_dir() and not Path("mol").is_symlink():
-        print("I should not have a real mol subdirectory")
-        sys.exit(1)
-    if not Path("mol").is_symlink():
-        os.symlink("../mol", "mol")
-
     with open("in.reactions.full.1", "r") as f:
         contents = f.read()
 
-    with open("in.reactions.full.check", "r") as f:
-       contents_check = f.read()
-
-    if contents_check != contents:
+    if "stabilization" not in contents:
+        # our in.reactions file has not been fixed.  fix it now
 
         contents = re.sub(r"([^ ]*\.(molecule_template|map|))", "mol/\\1", contents)
         # replace generic parameter value placeholders with our specific values
@@ -280,24 +271,26 @@ def fix_reactions():
         contents = contents.replace("Rmax", "3.0")
         with open("in.reactions.full.1", "w") as f:
             f.write(contents)
-    
-        with open("in.reactions.full.check", "r") as f:
-           contents_check = f.read()
-        if contents_check != contents:
-           print("Unexpected contents for in.reactions.full.1 -- did not match in.reactions.full.check")
-           sys.exit(1)
+
+    # We produce a ton of molecule templates and map files.  Ideally, we share
+    # these across all directories via a symlinked directory, which we assume
+    # already exists.  If so, we will simply delete our files.  If it does not
+    # exist, then leave our files and suggest creating one.
+    molpath = Path("mol")
+    if not molpath.is_symlink() or not Path("mol").is_dir():
+        print("I do not see a symlink to a mol directory.  It may be more convenient")
+        print("to store molecule templates and map files in a shared directory and")
+        print("symlink to it from all directories.")
+        return
 
     # all these files should already exist in the mol directory we're re-using
     files = glob.glob("*X_*.molecule_template") + glob.glob("*X_*.map")
     for f in files:
         os.remove(f)
 
-def fix_lmp(file, pdb, params):
+def fix_lmp(file, newfile, pdb, params):
     with open(file, "r") as f:
         contents = f.read()
-
-    if "LL1" not in contents and "LLL" not in contents and "RC" not in contents:
-        return
 
     rc = 15
     if 'rc' in params:
@@ -330,7 +323,7 @@ def fix_lmp(file, pdb, params):
     elif 'LLL' in contents:
         contents = contents.replace("LLL", f"{Lnew:.15f}")
 
-    with open(file, "w") as f:
+    with open(newfile, "w") as f:
         f.write(contents)
 
     
@@ -382,9 +375,9 @@ def main():
     if params['nFe'] > 0:
         fix_reactions()
     if params['nFe'] > 0:
-        fix_lmp("reaction.1.lmp", "box.pdb", params)
+        fix_lmp("reaction.0.lmp", "reaction.1.lmp", "box.pdb", params)
     else:
-        fix_lmp("anneal.PBI.lmp", "box.pdb", params)
+        fix_lmp("anneal.PBI.lmp", "anneal.lmp", "box.pdb", params)
 
     
 if __name__ == "__main__":
