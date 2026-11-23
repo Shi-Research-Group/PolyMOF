@@ -3,3 +3,11 @@
 # packmol seed has been set in params just for reproducibility
 # all output files should be identical
 python ../../polymof/polymof_setup.py
+
+mkdir -p mol
+mv FEX_* mol
+
+echo "=========="
+
+# LAMMPS output may not be identical
+srun $LAMMPS -i reaction.1.lmp -var my_seed 54321

@@ -53,7 +53,7 @@ unfix d
 unfix eq0
 
 fix eq all nvt temp 1500 1500 100
-run 1000000
+run 100000
 unfix eq
 
 undump dumpeq
@@ -67,6 +67,6 @@ fix 1 statted_grp_REACT nvt temp 1500 1500 100
 thermo 100
 thermo_style custom step temp press density pe econserve lx ly lz f_rxns[*]
 
-run 100000
+run 10000
 
 write_data final.data.1
